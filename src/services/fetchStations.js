@@ -8,7 +8,6 @@ export async function fetchDataStations(id) {
     )
     .then((response) => {
       const stations = response.data;
-      // console.log(stations);
       return stations;
     })
     .catch((err) => {
