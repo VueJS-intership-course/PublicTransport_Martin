@@ -16,7 +16,14 @@ import { Vector as VectorSource } from 'ol/source';
 import { Style, Circle, Fill, Stroke } from 'ol/style';
 
 export default {
-  props: ['stationsData'],
+  props: ['stationsData'], //isSelectedJourney
+  watch: {
+    selectedJourney(newValue) {
+      if (newValue) {
+        this.initMap()
+      }
+    }
+  },
   methods: {
     initMap() {
       const map = new Map({
@@ -32,12 +39,18 @@ export default {
         target: 'map',
       });
 
-      const vectorSource = new VectorSource();
+      const vectorSource = new VectorSource(); 
       const vectorLayer = new VectorLayer({ source: vectorSource });
 
+      // const selectedStations = this.stationsData.filter((station) => {
+      //   return station.journey === this.isSelectedJourney;
+      // });
+
+      //selectedStations
       this.stationsData.forEach((stop) => {
         const longitude = stop.Longitude;
         const latitude = stop.Latitude;
+        // console.log(stop);
         const coordinates = fromLonLat([longitude, latitude]);
 
         const pointStyle = new Style({
@@ -52,14 +65,13 @@ export default {
             }),
           }),
         });
-
         const feature = new Feature({
           geometry: new Point(coordinates),
         });
         feature.setStyle(pointStyle);
         vectorSource.addFeature(feature);
       });
-      map.addLayer(vectorLayer);
+      map.addLayer(vectorLayer);//
     },
   },
   mounted() {
