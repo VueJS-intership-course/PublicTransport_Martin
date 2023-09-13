@@ -1,38 +1,58 @@
 <template>
   <div class="layout">
-    <Table></Table>
-    <MapGermany :journey="journey"></MapGermany>
+    <Journeys :journeysData="journeys"></Journeys>
+    <MapComponent
+      v-if="isLoading"
+      :stationsData="stations"
+      :journeysData="journeys"
+    ></MapComponent>
   </div>
 </template>
 
 <script>
-import Table from './components/Table.vue';
-import MapGermany from './components/MapGermany.vue';
-import { default as axios } from 'axios';
+import Journeys from './components/Journeys/Journeys.vue';
+import MapComponent from './components/Map/MapComponent.vue';
+import { fetchDataStations } from './services/fetchStations.js';
+import { fetchDataJourneys } from './services/fetchJourneys.js';
+
 export default {
   components: {
-     Table, MapGermany 
-    },
+    Journeys,
+    MapComponent,
+  },
   data() {
     return {
-      journey: [],
-      latitude: '',
-      longitude: ''
+      stations: [],
+      isLoading: false,
+      journeys: [],
     };
   },
-  provide() {
-    return {
-      info: this.info
-    }
+  watch: {
+    isLoading(newVal) {
+      if (newVal === true) {
+        console.log('isLoading: ' + newVal);
+      }
+    },
+  },
+  methods: {
+    async fetchDataAndUpdate() {
+      try {
+        const stations = await fetchDataStations();
+        this.stations = Object.values(stations);
+        console.log('stations:', this.stations);
+
+        const journey = await fetchDataJourneys();
+        this.journeys = Object.keys(journey);
+        console.log('journeys:', this.journeys);
+
+        this.isLoading = true;
+      } catch (err) {
+        console.error(err);
+      }
+    },
   },
   created() {
-    axios.get('http://localhost:8080/public-transport/journey/ARR_20230912_23310_1223_0').then((response) => {
-      const journey = response.data.ARR_20230912_2201_1015_0;
-
-      for (const stop in journey) {
-        this.journey.push(journey[stop].Stops);
-      }
-    }).catch(err => console.log(err));
+    this.fetchDataAndUpdate();
   },
 };
 </script>
