@@ -15,17 +15,17 @@
 </template>
 <script>
 import { fetchDataStations } from '../../services/fetchStations';
-import Pagination from '../Pagination/Pagination.vue'
+import Pagination from '../Pagination/Pagination.vue';
 
 export default {
   props: ['journeysData'],
   components: {
-    Pagination, 
+    Pagination,
   },
   data() {
     return {
       currentPage: 1,
-      PER_PAGE: 10, 
+      PER_PAGE: 10,
     };
   },
   computed: {
@@ -49,14 +49,11 @@ export default {
       try {
         const allStations = await fetchDataStations(id);
         const station = Object.values(allStations[id].Stops);
-        console.log(station);
-        console.log(id);
         this.$emit('setStations', station);
-        // this.$emit('selectJourney', id);
       } catch (err) {
         console.error(err);
       }
-    }
+    },
   },
 };
 </script>

@@ -16,17 +16,23 @@ import { Vector as VectorSource } from 'ol/source';
 import { Style, Circle, Fill, Stroke } from 'ol/style';
 
 export default {
-  props: ['stationsData'], //isSelectedJourney
+  props: ['stationsData'],
+  data() {
+    return {
+      map: null,
+      layer: null,
+    };
+  },
   watch: {
-    selectedJourney(newValue) {
+    stationsData(newValue) {
       if (newValue) {
-        this.initMap()
+        this.setStationsOnMap(newValue);
       }
-    }
+    },
   },
   methods: {
     initMap() {
-      const map = new Map({
+      this.map = new Map({
         layers: [
           new TileLayer({
             source: new OSM(),
@@ -38,19 +44,19 @@ export default {
         }),
         target: 'map',
       });
+    },
+    setStationsOnMap(stationsData) {
+      if (this.layer) {
+        this.map.removeLayer(this.layer);
+      }
 
-      const vectorSource = new VectorSource(); 
+      const vectorSource = new VectorSource();
       const vectorLayer = new VectorLayer({ source: vectorSource });
+      this.layer = vectorLayer;
 
-      // const selectedStations = this.stationsData.filter((station) => {
-      //   return station.journey === this.isSelectedJourney;
-      // });
-
-      //selectedStations
-      this.stationsData.forEach((stop) => {
+      stationsData.forEach((stop) => {
         const longitude = stop.Longitude;
         const latitude = stop.Latitude;
-        // console.log(stop);
         const coordinates = fromLonLat([longitude, latitude]);
 
         const pointStyle = new Style({
@@ -71,7 +77,7 @@ export default {
         feature.setStyle(pointStyle);
         vectorSource.addFeature(feature);
       });
-      map.addLayer(vectorLayer);//
+      this.map.addLayer(vectorLayer);
     },
   },
   mounted() {

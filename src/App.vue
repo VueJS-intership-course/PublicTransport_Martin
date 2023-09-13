@@ -1,17 +1,19 @@
 <template>
-  <div class="layout">
-    <Journeys :journeysData="journeys" @set-stations="setStations"></Journeys>
+  <div class="layout" v-if="isLoading">
+    <Journeys :journeysData="journeys" @setStations="setStations"></Journeys>
     <MapComponent
       v-if="isLoading"
       :stationsData="stations"
     ></MapComponent>
   </div>
+  <div v-else class="loading">
+    <p>Loading...</p>
+  </div>
 </template>
-<!-- :isSelectedJourney="selectedJourney" -->
+
 <script>
 import Journeys from './components/Journeys/Journeys.vue';
 import MapComponent from './components/Map/MapComponent.vue';
-// import { fetchDataStations } from './services/fetchStations.js';
 import { fetchDataJourneys } from './services/fetchJourneys.js';
 
 export default {
@@ -24,7 +26,6 @@ export default {
       stations: [],
       isLoading: false,
       journeys: [],
-      selectedJourney: null //
     };
   },
   watch: {
@@ -39,13 +40,8 @@ export default {
   methods: {
     async fetchDataAndUpdate() {
       try {
-      //   const stations = await fetchDataStations();
-      //   this.stations = Object.values(stations);
-      //   console.log('stations:', this.stations);
-
         const journey = await fetchDataJourneys();
         this.journeys = Object.keys(journey);
-        // console.log('journeys:', this.journeys);
 
         this.isLoading = true;
       } catch (err) {
@@ -54,10 +50,7 @@ export default {
     },
     setStations(id) {
       this.stations = id;
-    },
-    // selectJourney(journey) {
-    //   this.selectedJourney = journey
-    // }
+    }
   },
   created() {
     this.fetchDataAndUpdate();
@@ -69,5 +62,9 @@ export default {
 .layout {
   display: flex;
   justify-content: space-around;
+}
+
+.loading {
+  font-size: 30px;
 }
 </style>
