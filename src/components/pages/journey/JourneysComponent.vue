@@ -33,7 +33,6 @@ export default {
     };
   },
   watch: {
-    //TODO: set on MapCompoennt
     isLoading(newVal) {
       if (newVal === true) {
         console.log('isLoading: ' + newVal);

@@ -9,4 +9,3 @@ export async function fetchDataStations(id) {
     console.log(error);
   }
 }
-// //TODO: USe axios.create

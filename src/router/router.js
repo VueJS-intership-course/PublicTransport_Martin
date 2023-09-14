@@ -7,7 +7,6 @@ const router =  createRouter({
         {
           name: 'Home',
           path: '/',
-          // component: App,
           redirect: '/journey'
         },
         {

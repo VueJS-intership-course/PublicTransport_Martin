@@ -25,7 +25,6 @@ import Pagination from '../Pagination/Pagination.vue';
 export default {
   props: ['journeysData'],
   beforeRouteUpdate(to, from, next) {
-    // Fetch data only if the journey ID has changed
     if (to.params.id !== from.params.id) {
       this.getStations(to.params.id);
     }

@@ -1,7 +1,6 @@
 <template>
   <div>
     <JourneysComponent></JourneysComponent>
-    <!-- <RouterView></RouterView> -->
   </div>
 </template>
 
