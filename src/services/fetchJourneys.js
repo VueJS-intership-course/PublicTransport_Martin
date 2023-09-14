@@ -6,6 +6,6 @@ export async function fetchDataJourneys() {
     const journeys = response.data //(await response).data
     return journeys;
   } catch(error) {
-    throw error;
+    console.log(error);
   }
 }

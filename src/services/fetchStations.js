@@ -6,7 +6,7 @@ export async function fetchDataStations(id) {
     const stations = response.data;
     return stations;
   } catch (error) {
-    throw error;
+    console.log(error);
   }
 }
 // //TODO: USe axios.create
