@@ -8,8 +8,8 @@
           {{ stationName }}
         </span>
       </p>
-      <p>Station Status: {{ stationStatus }}</p>
-      <p>Wheel Chair: {{ isWheelChairAccessible }}</p>
+      <p class="stationStatus">Station Status: {{ stationStatus }}</p>
+      <p class="stationWheelChair">Wheel Chair: {{ isWheelChairAccessible }}</p>
     </div>
   </div>
 </template>
@@ -142,6 +142,14 @@ export default {
 }
 
 .stationName {
-  font: bold;
+  font-weight: bold;
+}
+
+.stationStatus {
+  font-weight: bold;
+}
+
+.stationWheelChair {
+  font-weight: bold;
 }
 </style>

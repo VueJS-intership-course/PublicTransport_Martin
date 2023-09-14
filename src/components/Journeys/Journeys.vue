@@ -74,4 +74,9 @@ export default {
 ul {
   list-style: none;
 }
+
+button {
+  width: 300px;
+  margin: 3px;
+}
 </style>
