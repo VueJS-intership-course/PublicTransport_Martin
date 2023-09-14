@@ -2,7 +2,12 @@
   <div id="map" class="map"></div>
   <div ref="popup" class="popup">
     <div id="popupContent">
-      <p>Station Name: {{ stationName }}</p>
+      <p class="stationName">
+        Station Name:
+        <span>
+          {{ stationName }}
+        </span>
+      </p>
       <p>Station Status: {{ stationStatus }}</p>
       <p>Wheel Chair: {{ isWheelChairAccessible }}</p>
     </div>
@@ -20,8 +25,8 @@ import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
-import { Style, Circle, Fill, Stroke } from 'ol/style';
 import Overlay from 'ol/Overlay';
+import pointStyle from './styles/pointStyle';
 
 export default {
   props: ['stationsData'],
@@ -33,7 +38,7 @@ export default {
       clickedStation: null,
       stationName: '',
       stationStatus: '',
-      isWheelChairAccessible: ''
+      isWheelChairAccessible: '',
     };
   },
   watch: {
@@ -66,7 +71,10 @@ export default {
       this.map.addOverlay(this.popup);
 
       this.map.on('click', (evt) => {
-        const feature = this.map.forEachFeatureAtPixel(evt.pixel, (feature) => feature);
+        const feature = this.map.forEachFeatureAtPixel(
+          evt.pixel,
+          (feature) => feature
+        );
         if (feature) {
           this.clickedStation = feature.values_; //feature.getProperties(); allows to access the properties of the clicked station
           // console.log(feature.values_);
@@ -91,22 +99,10 @@ export default {
         const longitude = stop.Longitude;
         const latitude = stop.Latitude;
         const coordinates = fromLonLat([longitude, latitude]);
-
-        const pointStyle = new Style({
-          image: new Circle({
-            radius: 6,
-            fill: new Fill({
-              color: 'red',
-            }),
-            stroke: new Stroke({
-              color: 'black',
-              width: 2,
-            }),
-          }),
-        });
+        
         const feature = new Feature({
           geometry: new Point(coordinates),
-          properties: stop, 
+          properties: stop,
         });
         feature.setStyle(pointStyle);
         vectorSource.addFeature(feature);
@@ -114,11 +110,11 @@ export default {
       this.map.addLayer(vectorLayer);
     },
     openPopup() {
-        const stationData = this.clickedStation.properties;
-        this.stationName = stationData.DestinationName50;
-        this.stationStatus = stationData.TripStopStatus;
-        this.isWheelChairAccessible = stationData.WheelChairAccessible;
-        this.popup.setPosition(this.clickedStation.geometry.flatCoordinates);
+      const stationData = this.clickedStation.properties;
+      this.stationName = stationData.DestinationName50;
+      this.stationStatus = stationData.TripStopStatus;
+      this.isWheelChairAccessible = stationData.WheelChairAccessible;
+      this.popup.setPosition(this.clickedStation.geometry.flatCoordinates);
     },
     closePopup() {
       this.popup.setPosition(undefined);
@@ -143,5 +139,9 @@ export default {
   padding: 10px;
   border-radius: 25px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.stationName {
+  font: bold;
 }
 </style>
