@@ -38,6 +38,7 @@ export default {
     return {
       currentPage: 1,
       PER_PAGE: 10,
+      isActivatedButton: false
     };
   },
   computed: {
@@ -61,6 +62,7 @@ export default {
       try {
         const allStations = await fetchDataStations(id);
         const station = Object.values(allStations[id].Stops);
+        this.isActivatedButton = true;
         this.$emit('setStations', station);
       } catch (err) {
         console.error(err);

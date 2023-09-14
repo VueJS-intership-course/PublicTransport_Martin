@@ -100,6 +100,6 @@ export default {
 .pagination button.active {
   background-color: #007bff;
   color: #fff;
-  border: 1px solid #007bff;
+  outline: 4px auto -webkit-focus-ring-color;
 }
 </style>

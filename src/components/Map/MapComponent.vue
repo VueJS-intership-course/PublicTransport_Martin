@@ -27,6 +27,7 @@ import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 import Overlay from 'ol/Overlay';
 import pointStyle from './styles/pointStyle';
+import wheelChairPointStyle from './styles/wheelChairPointStyle.js'
 
 export default {
   props: ['stationsData'],
@@ -104,7 +105,11 @@ export default {
           geometry: new Point(coordinates),
           properties: stop,
         });
-        feature.setStyle(pointStyle);
+        if (stop.WheelChairAccessible === 'ACCESSIBLE') {
+          feature.setStyle(wheelChairPointStyle);
+        } else {
+          feature.setStyle(pointStyle)
+        }
         vectorSource.addFeature(feature);
       });
       this.map.addLayer(vectorLayer);
