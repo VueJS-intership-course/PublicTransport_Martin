@@ -4,7 +4,7 @@
       <button @click="previous" :disabled="currentPage === 1">Previous</button>
     </li>
     <li>
-      <button @click="goToPage(1)" :disabled="currentPage === 1">1</button>
+      <button @click="goToPage(1)" :disabled="currentPage === 1" :class="{ active: currentPage === 1 }">1</button>
     </li>
     <p v-if="currentPage > 3">...</p>
     <li v-for="pageNumber in visiblePages" :key="pageNumber">
@@ -20,6 +20,7 @@
       <button
         @click="goToPage(totalPages)"
         :disabled="currentPage === totalPages"
+        :class="{ active: currentPage === totalPages }"
       >
         {{ totalPages }}
       </button>

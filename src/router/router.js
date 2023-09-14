@@ -7,11 +7,12 @@ const router =  createRouter({
         {
           name: 'Home',
           path: '/',
-          component: App,
+          // component: App,
+          redirect: '/journey'
         },
         {
-          name: 'Journey',
-          path: '/public-transport/journey/:id',
+          name: 'journey',
+          path: '/journey/:id?',
           component: App
         },
       ],
