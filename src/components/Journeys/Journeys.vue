@@ -3,7 +3,9 @@
     <h3>Journeys</h3>
     <ul>
       <li v-for="(journey, index) in paginatedJourneys" :key="index">
-        <button @click="getStations(journey)">{{ journey }}</button>
+        <router-link :to="'/public-transport/journey/' + journey">
+          <button @click="getStations(journey)">{{ journey }}</button>
+        </router-link>
       </li>
     </ul>
     <Pagination

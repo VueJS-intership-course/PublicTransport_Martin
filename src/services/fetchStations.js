@@ -1,16 +1,12 @@
-import axios from 'axios';
+import instance from './fetch';
 
 export async function fetchDataStations(id) {
-  return axios
-    .get(
-      // 'http://localhost:8080/public-transport/journey/HTM_20230912_3_30088_0'
-      `http://localhost:8080/public-transport/journey/${id}`
-    )
-    .then((response) => {
-      const stations = response.data;
-      return stations;
-    })
-    .catch((err) => {
-      throw err;
-    });
+  try {
+    const response = await instance.get(`/public-transport/journey/${id}`);
+    const stations = response.data;
+    return stations;
+  } catch (error) {
+    throw error;
+  }
 }
+// //TODO: USe axios.create

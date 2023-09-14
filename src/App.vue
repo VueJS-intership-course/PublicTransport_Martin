@@ -1,14 +1,13 @@
 <template>
-  <div class="layout" v-if="isLoading">
-    <Journeys :journeysData="journeys" @setStations="setStations"></Journeys>
-    <MapComponent
-      v-if="isLoading"
-      :stationsData="stations"
-    ></MapComponent>
-  </div>
-  <div v-else class="loading">
-    <p>Loading...</p>
-  </div>
+  <RouterView>
+    <div class="layout" v-if="isLoading">
+      <Journeys :journeysData="journeys" @setStations="setStations"></Journeys>
+      <MapComponent :stationsData="stations"></MapComponent>
+    </div>
+    <div v-else class="loading">
+      <p>Loading...</p>
+    </div>
+  </RouterView>
 </template>
 
 <script>
@@ -29,6 +28,7 @@ export default {
     };
   },
   watch: {
+    //TODO: set on MapCompoennt
     isLoading(newVal) {
       if (newVal === true) {
         console.log('isLoading: ' + newVal);
@@ -50,7 +50,7 @@ export default {
     },
     setStations(id) {
       this.stations = id;
-    }
+    },
   },
   created() {
     this.fetchDataAndUpdate();
@@ -64,7 +64,15 @@ export default {
   justify-content: space-around;
 }
 
+.paragraph {
+  font-size: 30px;
+  text-align: center;
+  margin-top: 300px;
+}
+
 .loading {
   font-size: 30px;
 }
+
+
 </style>

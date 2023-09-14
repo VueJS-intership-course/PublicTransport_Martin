@@ -1,7 +1,11 @@
 <template>
   <div id="map" class="map"></div>
   <div ref="popup" class="popup">
-    <div id="popupContent"></div>
+    <div id="popupContent">
+      <p>Station Name: {{ stationName }}</p>
+      <p>Station Status: {{ stationStatus }}</p>
+      <p>Wheel Chair: {{ isWheelChairAccessible }}</p>
+    </div>
   </div>
 </template>
 
@@ -27,6 +31,9 @@ export default {
       layer: null,
       popup: null,
       clickedStation: null,
+      stationName: '',
+      stationStatus: '',
+      isWheelChairAccessible: ''
     };
   },
   watch: {
@@ -61,7 +68,7 @@ export default {
       this.map.on('click', (evt) => {
         const feature = this.map.forEachFeatureAtPixel(evt.pixel, (feature) => feature);
         if (feature) {
-          this.clickedStation = feature.values_; //feature.getProperties(); allows to access to the properties of the clicked station
+          this.clickedStation = feature.values_; //feature.getProperties(); allows to access the properties of the clicked station
           // console.log(feature.values_);
           // console.log(this.clickedStation);
           this.openPopup();
@@ -108,8 +115,9 @@ export default {
     },
     openPopup() {
         const stationData = this.clickedStation.properties;
-        const popupContent = document.getElementById('popupContent')
-        popupContent.innerHTML = `<p>Station Name: <span>${stationData.DestinationName50}</span></p><br><p>Station Status: <span>${stationData.TripStopStatus}</span></p>`;
+        this.stationName = stationData.DestinationName50;
+        this.stationStatus = stationData.TripStopStatus;
+        this.isWheelChairAccessible = stationData.WheelChairAccessible;
         this.popup.setPosition(this.clickedStation.geometry.flatCoordinates);
     },
     closePopup() {

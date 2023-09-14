@@ -1,15 +1,11 @@
-import axios from 'axios';
+import instance from "./fetch";
 
 export async function fetchDataJourneys() {
-  return axios
-    .get(
-      'http://localhost:8080/public-transport/journey'
-    )
-    .then((response) => {
-      const journeys = response.data;
-      return journeys;
-    })
-    .catch((err) => {
-      throw err;
-    });
+  try {
+    const response = await instance.get('/public-transport/journey');
+    const journeys = response.data //(await response).data
+    return journeys;
+  } catch(error) {
+    throw error;
+  }
 }
