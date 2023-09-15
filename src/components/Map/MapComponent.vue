@@ -113,6 +113,7 @@ export default {
         vectorSource.addFeature(feature);
       });
       this.map.addLayer(vectorLayer);
+      this.closePopup();
     },
     openPopup() {
       const stationData = this.clickedStation.properties;

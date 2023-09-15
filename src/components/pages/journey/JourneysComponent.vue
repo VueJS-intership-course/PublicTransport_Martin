@@ -1,17 +1,16 @@
 <template>
   <div>
-    <RouterView>
       <div class="layout" v-if="isLoading">
         <Journeys
           :journeysData="journeys"
           @setStations="setStations"
+          :stationId="id"
         ></Journeys>
         <MapComponent :stationsData="stations"></MapComponent>
       </div>
       <div v-else class="loading">
         <p>Loading...</p>
       </div>
-    </RouterView>
   </div>
 </template>
 
@@ -21,6 +20,11 @@ import MapComponent from '../..//Map/MapComponent.vue';
 import { fetchDataJourneys } from '../../../services/fetchJourneys';
 
 export default {
+  props: {
+    id: {
+      type: String,
+    }
+  },
   components: {
     Journeys,
     MapComponent,
@@ -33,13 +37,9 @@ export default {
     };
   },
   watch: {
-    isLoading(newVal) {
-      if (newVal === true) {
-        console.log('isLoading: ' + newVal);
-      } else {
-        console.log('isLoading is false');
-      }
-    },
+    id: function (newId) {
+      console.log(newId);
+    }
   },
   methods: {
     async fetchDataAndUpdate() {
@@ -52,12 +52,14 @@ export default {
         console.error(err);
       }
     },
-    setStations(id) {
-      this.stations = id;
+    setStations(stations) {
+      this.stations = stations;
+      console.log(stations);
     },
   },
   created() {
     this.fetchDataAndUpdate();
+    console.log(this.id);
   },
 };
 </script>

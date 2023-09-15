@@ -6,7 +6,7 @@
         <!-- <router-link :to="'/public-transport/journey/' + journey">
           <button @click="getStations(journey)">{{ journey }}</button>
         </router-link> -->
-        <router-link :to="{name: 'journey', params: {id: journey}}">
+        <router-link :to="{ name: 'journey', params: { id: journey } }">
           <button @click="getStations(journey)">{{ journey }}</button>
         </router-link>
       </li>
@@ -23,13 +23,7 @@ import { fetchDataStations } from '../../services/fetchStations';
 import Pagination from '../Pagination/Pagination.vue';
 
 export default {
-  props: ['journeysData'],
-  beforeRouteUpdate(to, from, next) {
-    if (to.params.id !== from.params.id) {
-      this.getStations(to.params.id);
-    }
-    next();
-  },
+  props: ['journeysData', 'stationId'],
   components: {
     Pagination,
   },
@@ -37,8 +31,21 @@ export default {
     return {
       currentPage: 1,
       PER_PAGE: 10,
-      isActivatedButton: false
     };
+  },
+  watch: {
+    stationId: {
+      // immediate: true, //create()
+      handler(newId) {
+        this.getStations(newId);
+        console.log('journeys');
+      },
+    },
+  },
+  created() {
+    if (this.stationId) {
+      this.getStations(this.stationId)
+    }
   },
   computed: {
     totalJourneys() {
@@ -61,10 +68,9 @@ export default {
       try {
         const allStations = await fetchDataStations(id);
         const station = Object.values(allStations[id].Stops);
-        this.isActivatedButton = true;
         this.$emit('setStations', station);
       } catch (err) {
-        console.error(err);
+        console.log(err);
       }
     },
   },
